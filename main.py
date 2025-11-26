@@ -2,8 +2,10 @@ from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
-books = []
-counter = 1
+books = [] 
+
+# Updated Counter to match our book count.
+counter = 3
 
 @app.get("/books")
 def get_books():
@@ -16,14 +18,19 @@ def get_book(book_id: int):
             return book
     raise HTTPException(status_code=404, detail="Book not found")
 
+
+# Added the year feature.
 @app.post("/books")
 def add_book(book: dict):
     global counter
+
     new_book = {
         "id": counter,
         "title": book.get("title"),
-        "author": book.get("author")
+        "author": book.get("author"),
+        "year": book.get("year")
     }
+
     books.append(new_book)
     counter += 1
     return new_book
@@ -35,3 +42,24 @@ def delete_book(book_id: int):
             books.remove(book)
             return {"message": "Book deleted"}
     raise HTTPException(status_code=404, detail="Book not found")
+
+books = [
+    {
+        "id": 1,
+        'title': "Nadav Magen's Book",
+        "author": "Nadav Magen",
+        "year": 2009
+    },
+    {
+        "id": 2,
+        "title": "C+ Book",
+        "author": "Boring Man!",
+        "year": 2010
+    },
+    {
+        "id": 3,
+        "title": "Java Book",
+        "author": "Cool Man!",
+        "year": 2020
+    }
+]
